@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>BFW NEW PAGE</title>
+    <script id="bfwone" data="dep=jquery.17" type="text/Javascript" src="http://repo.bfw.wiki/bfwrepo/js/bfwone.js"></script>
+    <script type="text/Javascript">
+        var db;
+        bready(function() {
+
+            use(["sql"], function() {
+
+                var dbFileElm = document.getElementById('dbFileEle');
+
+                document.getElementById('exec').onclick= function() {
+                    var sql = document.getElementById('sqlexc').value;
+                    console.log(db)
+                    console.log(sql)
+                    var result = db.exec(sql);
+                    console.log(result);
+                    use(["Table"], function() {
+                        Table().init({
+                            id: 'table',
+                            header: result[0].columns,
+                            data: result[0].values
+                        });
+
+
+                    });
+                };
+                dbFileElm.onchange= function() {
+                    if (dbFileElm.files[0] != null) {
+                        var f = dbFileElm.files[0];
+                        var r = new FileReader();
+                        r.onload= function() {
+                            var Uints = new Uint8Array(r.result);
+                            db = new SQL.Database(Uints);
+                            console.log(db)
+                        }
+                        r.readAsArrayBuffer(f);
+                    }
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <input type="file" id="dbFileEle" />请先选择sqlite文件
+    <input type="text" id="sqlexc" style="width:300px;" value="SELECT * FROM service" /><input type="button" id="exec" value="执行sql" />
+    <pre id='result'></pre>
+    <pre id='error'></pre>
+    <div id="table"></div>
+</body>
+</html>
