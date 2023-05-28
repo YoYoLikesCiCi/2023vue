@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Sunqi SQL Page</title>
+    <script id="bfwone" data="dep=jquery.17" type="text/Javascript" src="./bfwone.js"></script>
+    <!-- 数据库功能 -->
+    <script type="text/Javascript">
+      var db;
+      bready(function(){
+          use(["sql"], function(){
+              var dbFileElm = document.getElementById('dbFileEle');
+
+          document.getElementById('exec').onclick = function () {
+              var sql  = document.getElementById('sql1').value;
+              console.log(db)
+              console.log(sql)
+              var result  = db.exec(sql);
+              console.log(result);
+              use(["Table"],function(){
+                  Table().init({
+                      id : 'table',
+                      header: result[0].columes,
+                      data: result[0].values
+                  });
+              });
+          };
+
+          dbFileElm.onchange = function(){
+              if (dbFileElm.files[0] != null){
+                  var f = dbFileElm.files[0];
+                  var r = new FileReader();
+                  r.onload = function(){
+                      var Uints = new Uint8Array(r.result);
+                      db = new SQL.Database(Uints);
+                      console.log(db)
+                  }
+                  r.readAsArrayBuffer(f);
+              }
+          }
+          })
+      });
+    </script>
+
+<!-- 看所有记录 -->
+<script>
+    function seeAll (){
+        document.getElementById('sql1').value =  "SELECT * FROM Records order by record_time desc"
+        var temp =document.getElementById('exec')
+        temp.onclick() 
+    }
+
+</script>
+
+<!-- 支出功能 -->
+    <script type="text/Javascript">
+                bready(function(){
+                    document.getElementById('insertExpendRecord').onclick = function () {
+                        var tempp = "insert into Records (value, from_account, to_account, record_Time, note ) values("
+                        tempp = tempp + document.getElementById('price').value
+                        tempp = tempp + ", "
+                        tempp = tempp + "\""
+                        tempp = tempp + document.getElementById('secondAccount').value 
+                        tempp = tempp + "\"" 
+                        tempp = tempp + ", "
+                        tempp = tempp + "\""  
+                        tempp = tempp + document.getElementById('secondExpend').value 
+                        tempp = tempp + "\"" 
+                        tempp = tempp + ", "
+                        tempp = tempp + "\""  
+                        var temp3 =document.getElementById('date').value   
+                        temp3 = temp3.replace("T"," ")
+                        tempp = tempp + temp3
+                        tempp = tempp + "\"" 
+                        tempp = tempp + ", "
+                        tempp = tempp + "\""  
+                        tempp = tempp + document.getElementById('note').value  
+                        tempp = tempp + "\""  
+                        tempp = tempp + ")"  
+                        // var temp = document.getElementById('sql2').value ;
+                        document.getElementById('sql1').value = tempp;
+            }
+               }
+               )
+    </script>
+
+<!-- 收入功能 -->
+
+    <script type="text/Javascript">
+        bready(function(){
+            document.getElementById('insertIncomeRecord').onclick = function () {
+                var tempp = "insert into Records (value, from_account, to_account, record_Time, note ) values("
+                tempp = tempp + document.getElementById('price').value
+                tempp = tempp + ", "
+                tempp = tempp + "\""
+                tempp = tempp + document.getElementById('secondIncome').value 
+                tempp = tempp + "\"" 
+                tempp = tempp + ", "
+                tempp = tempp + "\""  
+                tempp = tempp + document.getElementById('secondAccount').value 
+                tempp = tempp + "\"" 
+                tempp = tempp + ", "
+                tempp = tempp + "\""  
+                var temp3 =document.getElementById('date').value   
+                temp3 = temp3.replace("T"," ")
+                tempp = tempp + temp3
+                tempp = tempp + "\"" 
+                tempp = tempp + ", "
+                tempp = tempp + "\""  
+                tempp = tempp + document.getElementById('note').value  
+                tempp = tempp + "\""  
+                tempp = tempp + ")"  
+                // var temp = document.getElementById('sql2').value ;
+                document.getElementById('sql1').value = tempp;
+    }
+       }
+       )
+</script>
+
+<!-- 转账功能 -->
+<script type="text/Javascript">
+    bready(function(){
+        document.getElementById('insertTransRecord').onclick = function () {
+            var tempp = "insert into Records (value, from_account, to_account, record_Time, note ) values("
+            tempp = tempp + document.getElementById('price').value
+            tempp = tempp + ", "
+            tempp = tempp + "\""
+            tempp = tempp + document.getElementById('secondAccount').value 
+            tempp = tempp + "\"" 
+            tempp = tempp + ", "
+            tempp = tempp + "\""  
+            tempp = tempp + document.getElementById('secondAccount2').value 
+            tempp = tempp + "\"" 
+            tempp = tempp + ", "
+            tempp = tempp + "\""  
+            var temp3 =document.getElementById('date').value   
+            temp3 = temp3.replace("T"," ")
+            tempp = tempp + temp3
+            tempp = tempp + "\"" 
+            tempp = tempp + ", "
+            tempp = tempp + "\""  
+            tempp = tempp + document.getElementById('note').value  
+            tempp = tempp + "\""  
+            tempp = tempp + ")"  
+            // var temp = document.getElementById('sql2').value ;
+            document.getElementById('sql1').value = tempp;
+}
+   }
+   )
+</script>
+
+
+    <!-- 第二账户变动日志功能 -->
+    <script type="text/Javascript">
+        function printlog(){
+            var first = document.form_first_type.firstType;
+            var second = document.form_first_type.secondAccount; 
+            console.log("log")
+            console.log(first.value)
+            console.log(second.value)
+        }
+    </script>
+    <!-- 账户选择功能 -->
+    <script type="text/Javascript">
+        function changeCard(){
+            // var first = document.getElementById("firstType")
+            var first = document.form_first_type.firstType;
+            var second = document.form_first_type.secondAccount;
+            console.log(first.selectedIndex)
+            
+            // var second  = document.getElementById("secontAccount")
+            second.options.length = 0 ; //clear 
+            // while(second.options.le)
+            if(first.value  == "信用卡"){
+                second.options.add(new Option("招行白羊♈","招行白羊♈"))
+                second.options.add(new Option("建行visa白金","建行visa白金")) 
+                second.options.add(new Option("建设银行全球支付卡","建设银行全球支付卡"))
+                second.options.add(new Option("广发有鱼白金","广发有鱼白金"))
+                second.options.add(new Option("中行汽车卡","中行汽车卡"))
+                second.options.add(new Option("故宫联名卡","故宫联名卡"))
+                second.options.add(new Option("农行国家宝藏","农行国家宝藏"))
+                second.options.add(new Option("吉维尼小船","吉维尼小船"))
+            }else if (first.value == "网络信用"){
+                second.options.add(new Option("花呗","花呗"))
+                second.options.add(new Option("京东白条","京东白条")) 
+            }else if (first.value == "储值网络支付"){
+                second.options.add(new Option("天猫超市","天猫超市"))
+                second.options.add(new Option("支付宝","支付宝"))
+                second.options.add(new Option("微信钱包","微信钱包"))
+                second.options.add(new Option("京东小金库","京东小金库"))
+                second.options.add(new Option("翼支付","翼支付"))
+                second.options.add(new Option("建行速盈","建行速盈"))
+                second.options.add(new Option("饭卡","饭卡"))
+                second.options.add(new Option("余额宝","余额宝"))
+                second.options.add(new Option("qq钱包","qq钱包"))
+            }else if (first.value == "储蓄卡"){
+                second.options.add(new Option("小白青春卡","小白青春卡"))
+                second.options.add(new Option("龙卡通","龙卡通"))
+                second.options.add(new Option("工商银行","工商银行"))
+                second.options.add(new Option("邮政储蓄","邮政储蓄"))
+                second.options.add(new Option("中行6802","中行6802"))
+                second.options.add(new Option("中行校园卡7462","中行校园卡7462"))
+                second.options.add(new Option("海绵宝宝8376","海绵宝宝8376"))
+                second.options.add(new Option("农行","农行"))
+                second.options.add(new Option("大螺丝招行","大螺丝招行"))
+                second.options.add(new Option("一鹿追梦","一鹿追梦"))
+            }else if (first.value == "现金"){
+                second.options.add(new Option("现金","现金"))
+            }else if (firlst.value == "系统默认"){
+                second.options.add(new Option("千金散去","千金散去"))
+                second.options.add(new Option("欠别人的","欠别人的"))
+                second.options.add(new Option("余额变更","余额变更"))
+            }
+            document.form_first_type.secondAccount = second;
+        }
+    </script>
+    <!-- 收入选择功能 -->
+    <script>
+        function changeIncome() {
+            var first = document.form_first_income.firstIncome;
+            var second = document.form_first_income.secondIncome;
+
+            second.options.length = 0;
+
+            if (first.value == "职业收入") {
+                second.options.add(new Option("工资收入", "工资收入"))
+                second.options.add(new Option("奖金收入", "奖金收入"))
+                second.options.add(new Option("利息收入", "利息收入"))
+            } else if (first.value == "上一代") {
+                second.options.add(new Option("打赏", "打赏"))
+                second.options.add(new Option("报销", "报销"))
+                second.options.add(new Option("生活费", "生活费"))
+
+            } else if (first.value == "人情") {
+                second.options.add(new Option("亲戚", "亲戚"))
+            } else if (first.value == "其他收入") {
+                second.options.add(new Option("卖二手", "卖二手"))
+                second.options.add(new Option("返还", "返还"))
+                second.options.add(new Option("意外来钱", "意外来钱"))
+                second.options.add(new Option("刷单", "刷单"))
+            }
+        }
+    </script>
+    <!-- 支出选择功能 -->
+    <script>
+        function changeExpend() {
+            // var first = document.getElementById("firstType")
+            var first = document.form_first_expend.firstExpend;
+            var second = document.form_first_expend.secondExpend;
+            console.log(first.selectedIndex)
+
+            // var second  = document.getElementById("secontAccount")
+            second.options.length = 0; //clear 
+
+            if (first.value == "食品酒水") {
+                second.options.add(new Option("食材", "食材"))
+                second.options.add(new Option("早午晚餐", "早午晚餐"))
+                second.options.add(new Option("酒水饮料", "酒水饮料"))
+                second.options.add(new Option("水果零食", "水果零食"))
+                second.options.add(new Option("烹饪用品", "烹饪用品"))
+                second.options.add(new Option("聚餐", "聚餐"))
+            } else if (first.value == "居家物业") {
+                second.options.add(new Option("日常用品", "日常用品"))
+                second.options.add(new Option("家用电器", "家用电器"))
+                second.options.add(new Option("房租", "房租"))
+                second.options.add(new Option("物业水电", "物业水电"))
+                second.options.add(new Option("居家使用", "居家使用"))
+                second.options.add(new Option("个护清洁", "个护清洁"))
+                second.options.add(new Option("维修保养", "维修保养"))
+            } else if (first.value == "交流通讯") {
+                second.options.add(new Option("通信", "通信"))
+                second.options.add(new Option("邮寄费", "邮寄费"))
+            } else if (first.value == "休闲娱乐") {
+                second.options.add(new Option("搞机", "搞机"))
+                second.options.add(new Option("数码配件", "数码配件"))
+                second.options.add(new Option("游戏、充值", "游戏、充值"))
+                second.options.add(new Option("宠物宝贝", "宠物宝贝"))
+                second.options.add(new Option("运动健身", "运动健身"))
+                second.options.add(new Option("休闲玩乐", "休闲玩乐"))
+                second.options.add(new Option("旅游度假", "旅游度假"))
+                second.options.add(new Option("爱好", "爱好"))
+            } else if (first.value == "服务") {
+                second.options.add(new Option("各类会员服务", "各类会员服务"))
+                second.options.add(new Option("人力服务", "人力服务"))
+                second.options.add(new Option("知识付费", "知识付费"))
+            } else if (firlst.value == "行车交通") {
+                second.options.add(new Option("公共交通", "公共交通"))
+                second.options.add(new Option("打车租车", "打车租车"))
+                second.options.add(new Option("长途车票", "长途车票"))
+            } else if (first.value == "家长") {
+                second.options.add(new Option("衣食住行", "衣食住行"))
+                second.options.add(new Option("孝敬", "孝敬"))
+                second.options.add(new Option("医疗", "医疗"))
+                second.options.add(new Option("衣帽", "衣帽"))
+            } else if (first.value == "医疗保健") {
+                second.options.add(new Option("医保", "医保"))
+                second.options.add(new Option("药品费", "药品费"))
+                second.options.add(new Option("治疗费", "治疗费"))
+            } else if (first.value == "衣服饰品") {
+                second.options.add(new Option("衣服裤子", "衣服裤子"))
+                second.options.add(new Option("鞋帽包包", "鞋帽包包"))
+                second.options.add(new Option("眼镜手表", "眼镜手表"))
+            } else if (first.value == "人情往来") {
+                second.options.add(new Option("送礼请客", "送礼请客"))
+                second.options.add(new Option("红包", "红包"))
+                second.options.add(new Option("孝敬家长", "孝敬家长"))
+            } else if (first.value == "学习进修") {
+                second.options.add(new Option("知", "知"))
+                second.options.add(new Option("学习用品", "学习用品"))
+                second.options.add(new Option("education", "education"))
+            } else if (first.value = "金融保险") {
+                second.options.add(new Option("利息支出", "利息支出"))
+                second.options.add(new Option("保险", "保险"))
+            }
+            // document.form_first_type.secondAccount = second;
+        } 
+    </script>
+</head>
+
+<body>
+    <input type="file" id="dbFileEle" /> 请选择sqlite文件
+
+    <p>
+        <input type="text" id="sql1" style="width: 1300px"
+            value="SELECT * FROM Records order by record_time desc" /><input type="button" id="exec" value="执行sql" />
+    </p>
+    <p>
+            <input type="button" id="selectAllRecord" value="看所有记录" onclick="seeAll()" />
+    </p>
+    <p>
+        插入支出记录：
+        <input type="text" id="inputInsertExpendRecord" style="width: 600px" value="SELECT * FROM x" />
+        <input type="button" id="insertExpendRecord" value="支出" />
+    </p>
+    <p>
+        插入收入记录：
+        <input type="text" id="inputInsertIncomeRecord" style="width: 600px" value="SELECT * FROM x" />
+        <input type="button" id="insertIncomeRecord" value="收入" />
+    </p>
+    <p>
+        插入转账记录：
+        <input type="text" id="inputInsertTransRecord" style="width: 600px" value="SELECT * FROM x" />
+        <input type="button" id="insertTransRecord" value="转账" />
+    </p>
+    <p>
+        备注:
+        <input type="text" id="note" style="width: 300px" value="" />
+
+        <!-- <input type="button" id="set1" value="设置值" /> -->
+    </p>
+
+    <p>
+        请输入价格:
+        <input type="text" id="price" style="width: 300px" value="00" />
+
+        <!-- <input type="button" id="set1" value="设置值" /> -->
+    </p>
+    <p>
+        请选择时间：&nbsp&nbsp&nbsp
+        <input type="datetime-local" id="date" value="2023-05-20 13:11:11">
+    </p>
+
+    <!-- 选择收入类型 -->
+    <form name="form_first_income">
+        选择收入类型: &nbsp&nbsp&nbsp
+        <select name="firstIncome" , onchange="changeIncome()">
+            <option value="职业收入" selected>职业收入</option>
+            <option value="上一代">上一代</option>
+            <option value="其他收入">其他收入</option>
+            <option value="人情">人情</option>
+        </select>
+
+        <select id="secondIncome">
+            <option value="工资收入" selected>工资收入</option>
+            <option value="奖金收入">奖金收入</option>
+            <option value="利息收入">利息收入</option>
+        </select>
+    </form>
+    </p>
+
+    <!-- 选择支出类型 -->
+    <p>
+    <form name="form_first_expend">
+        选择支出类型: &nbsp&nbsp&nbsp
+        <select name="firstExpend" , onchange="changeExpend()">
+            <option value="食品酒水" selected>食品酒水</option>
+            <option value="居家物业">居家物业</option>
+            <option value="交流通讯">交流通讯</option>
+            <option value="休闲娱乐">休闲娱乐</option>
+            <option value="服务">服务</option>
+            <option value="行车交通">行车交通</option>
+            <option value="家长">家长</option>
+            <option value="医疗保健">医疗保健</option>
+            <option value="衣服饰品">衣服饰品</option>
+            <option value="人情往来">人情往来</option>
+            <option value="学习进修">学习进修</option>
+            <option value="金融保险">金融保险</option>
+        </select>
+
+        <select id="secondExpend">
+            <option value="食材" selected>食材</option>
+            <option value="酒水饮料">酒水饮料</option>
+            <option value="早午晚餐">早午晚餐</option>
+            <option value="水果零食">水果零食</option>
+            <option value="烹饪用品">烹饪用品</option>
+            <option value="聚餐">聚餐</option>
+        </select>
+    </form>
+    </p>
+
+    <!-- 选择支出账户 -->
+    <p>
+    <form name="form_first_type" ,action="">
+        选择账户: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <select id="firstType" , onchange="changeCard()">
+            <option value="信用卡" selected> 信用卡</option>
+            <option value="储蓄卡">储蓄卡</option>
+            <option value="储值网络支付">储值网络支付</option>
+            <option value="现金">现金</option>
+            <option value="系统默认">系统默认</option>
+            <option value="网络信用">网络信用</option>
+        </select>
+
+        &nbsp&nbsp&nbsp&nbsp
+        <select id="secondAccount" , onchange="printlog()">
+            <!-- <option>第二账户</option> -->
+            <option value="招行白羊♈">"招行白羊♈"</option>
+            <option value="建行visa白金">建行visa白金</option>
+            <option value="建设银行全球支付卡" , selected> 建设银行全球支付卡 </option>
+            <option value="广发有鱼白金">广发有鱼白金</option>
+            <option value="中行汽车卡">中行汽车卡</option>
+            <option value="故宫联名卡">故宫联名卡</option>
+            <option value="农行国家宝藏">农行国家宝藏</option>
+            <option value="吉维尼小船">吉维尼小船</option>
+        </select>
+    </form>
+
+    </p>
+
+    <form name="form2_first_type" ,action="">
+        选择第二个账户（转账用）: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <select id="firstType2" , onchange="changeCard()">
+            <option value="信用卡" selected> 信用卡</option>
+            <option value="储蓄卡">储蓄卡</option>
+            <option value="储值网络支付">储值网络支付</option>
+            <option value="现金">现金</option>
+            <option value="系统默认">系统默认</option>
+            <option value="网络信用">网络信用</option>
+        </select>
+
+        &nbsp&nbsp&nbsp&nbsp
+        <select id="secondAccount2" , onchange="printlog()">
+            <!-- <option>第二账户</option> -->
+            <option value="招行白羊♈">"招行白羊♈"</option>
+            <option value="建行visa白金">建行visa白金</option>
+            <option value="建设银行全球支付卡" , selected> 建设银行全球支付卡 </option>
+            <option value="广发有鱼白金">广发有鱼白金</option>
+            <option value="中行汽车卡">中行汽车卡</option>
+            <option value="故宫联名卡">故宫联名卡</option>
+            <option value="农行国家宝藏">农行国家宝藏</option>
+            <option value="吉维尼小船">吉维尼小船</option>
+        </select>
+    </form>
+
+    </p>
+
+
+    <pre id="result"></pre>
+    <pre id="error"></pre>
+    <div id="table"></div>
+</body>
+
+</html>
