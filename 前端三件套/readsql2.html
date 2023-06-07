@@ -42,6 +42,8 @@
           })
       });
     </script>
+    <!-- http请求 -->
+    <script type="text/Javascript" src="./httpViaJS.js"></script>
 
 <!-- 看所有记录 -->
 <script>
@@ -327,6 +329,11 @@
     </p>
     <p>
             <input type="button" id="selectAllRecord" value="看所有记录" onclick="seeAll()" />
+    </p>
+    <p>
+        <input type="button" value="httptest" onclick="http.post({ url: 'http://www.baidu.com', data: '123', timeout: 1000 }, function (err, result) {
+            // 这里对结果进行处理
+        });">
     </p>
     <p>
         插入支出记录：

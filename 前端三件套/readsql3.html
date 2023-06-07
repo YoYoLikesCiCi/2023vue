@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Sunqi SQL Page</title>
+    <script id="bfwone" data="dep=jquery.17" type="text/Javascript" src="./bfwone.js"></script>
+    <script src="./js/secondJS.js"></script>
+</head>
+
+<body>
+    <input type="file" id="dbFileEle" /> 请选择sqlite文件
+
+    <p>
+        <input type="text" id="sql1" style="width: 1300px"
+            value="SELECT * FROM Records order by record_time desc" /><input type="button" id="exec" value="执行sql" />
+    </p>
+    <p>
+        <input type="button" id="selectAllRecord" value="看所有记录" onclick="seeAll()" />
+    </p>
+
+    <p>
+        <input type="text" id="html_record_id" style="width: 300px"
+            value="" /><input type="button" id="delete_record_id" value="删除指定ID记录" />
+    </p>
+
+
+
+    <p>
+        <!-- <input type="button" value="httptest" onclick="http.post({ url: '127.0.0.1:18000', data: '123', timeout: 1000 }, function (err, result) {
+            // 这里对结果进行处理
+            
+        });"> -->
+        <input type="button" value="httptestdd" onclick="testPost()">
+    </p>
+    <p>
+        插入支出记录：
+        <input type="text" id="inputInsertExpendRecord" style="width: 600px" value="SELECT * FROM x" />
+        <input type="button" id="insertExpendRecord" value="支出" />
+    </p>
+    <p>
+        插入收入记录：
+        <input type="text" id="inputInsertIncomeRecord" style="width: 600px" value="SELECT * FROM x" />
+        <input type="button" id="insertIncomeRecord" value="收入" />
+    </p>
+    <p>
+        插入转账记录：
+        <input type="text" id="inputInsertTransRecord" style="width: 600px" value="SELECT * FROM x" />
+        <input type="button" id="insertTransRecord" value="转账" />
+    </p>
+    <p>
+        备注:
+        <input type="text" id="note" style="width: 300px" value="" />
+
+        <!-- <input type="button" id="set1" value="设置值" /> -->
+    </p>
+
+    <p>
+        请输入价格:
+        <input type="text" id="price" style="width: 300px" value="00" />
+
+        <!-- <input type="button" id="set1" value="设置值" /> -->
+    </p>
+    <p>
+        请选择时间：&nbsp&nbsp&nbsp
+        <input type="datetime-local" id="date" value="2023-05-20 13:11:11">
+    </p>
+
+    <!-- 选择收入类型 -->
+    <form name="form_first_income">
+        选择收入类型: &nbsp&nbsp&nbsp
+        <select name="firstIncome" , onchange="changeIncome()">
+            <option value="职业收入" selected>职业收入</option>
+            <option value="上一代">上一代</option>
+            <option value="其他收入">其他收入</option>
+            <option value="人情">人情</option>
+        </select>
+
+        <select id="secondIncome">
+            <option value="工资收入" selected>工资收入</option>
+            <option value="奖金收入">奖金收入</option>
+            <option value="利息收入">利息收入</option>
+        </select>
+    </form>
+    </p>
+
+    <!-- 选择支出类型 -->
+    <p>
+    <form name="form_first_expend">
+        选择支出类型: &nbsp&nbsp&nbsp
+        <select name="firstExpend" , onchange="changeExpend()">
+            <option value="食品酒水" selected>食品酒水</option>
+            <option value="居家物业">居家物业</option>
+            <option value="交流通讯">交流通讯</option>
+            <option value="休闲娱乐">休闲娱乐</option>
+            <option value="服务">服务</option>
+            <option value="行车交通">行车交通</option>
+            <option value="家长">家长</option>
+            <option value="医疗保健">医疗保健</option>
+            <option value="衣服饰品">衣服饰品</option>
+            <option value="人情往来">人情往来</option>
+            <option value="学习进修">学习进修</option>
+            <option value="金融保险">金融保险</option>
+        </select>
+
+        <select id="secondExpend">
+            <option value="食材" selected>食材</option>
+            <option value="酒水饮料">酒水饮料</option>
+            <option value="早午晚餐">早午晚餐</option>
+            <option value="水果零食">水果零食</option>
+            <option value="烹饪用品">烹饪用品</option>
+            <option value="聚餐">聚餐</option>
+        </select>
+    </form>
+    </p>
+
+    <!-- 选择支出账户 -->
+    <p>
+    <form name="form_first_type" ,action="">
+        选择账户: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <select id="firstType" , onchange="changeCard()">
+            <option value="信用卡" selected> 信用卡</option>
+            <option value="储蓄卡">储蓄卡</option>
+            <option value="储值网络支付">储值网络支付</option>
+            <option value="现金">现金</option>
+            <option value="系统默认">系统默认</option>
+            <option value="网络信用">网络信用</option>
+        </select>
+
+        &nbsp&nbsp&nbsp&nbsp
+        <select id="secondAccount" , onchange="printlog()">
+            <!-- <option>第二账户</option> -->
+            <option value="招行白羊♈">"招行白羊♈"</option>
+            <option value="建行visa白金">建行visa白金</option>
+            <option value="建设银行全球支付卡" , selected> 建设银行全球支付卡 </option>
+            <option value="广发有鱼白金">广发有鱼白金</option>
+            <option value="中行汽车卡">中行汽车卡</option>
+            <option value="故宫联名卡">故宫联名卡</option>
+            <option value="农行国家宝藏">农行国家宝藏</option>
+            <option value="吉维尼小船">吉维尼小船</option>
+        </select>
+    </form>
+
+    </p>
+
+    <form name="form2_first_type" ,action="">
+        选择第二个账户（转账用）: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <select id="firstType2" , onchange="changeCard()">
+            <option value="信用卡" selected> 信用卡</option>
+            <option value="储蓄卡">储蓄卡</option>
+            <option value="储值网络支付">储值网络支付</option>
+            <option value="现金">现金</option>
+            <option value="系统默认">系统默认</option>
+            <option value="网络信用">网络信用</option>
+        </select>
+
+        &nbsp&nbsp&nbsp&nbsp
+        <select id="secondAccount2" , onchange="printlog()">
+            <!-- <option>第二账户</option> -->
+            <option value="招行白羊♈">"招行白羊♈"</option>
+            <option value="建行visa白金">建行visa白金</option>
+            <option value="建设银行全球支付卡" , selected> 建设银行全球支付卡 </option>
+            <option value="广发有鱼白金">广发有鱼白金</option>
+            <option value="中行汽车卡">中行汽车卡</option>
+            <option value="故宫联名卡">故宫联名卡</option>
+            <option value="农行国家宝藏">农行国家宝藏</option>
+            <option value="吉维尼小船">吉维尼小船</option>
+        </select>
+    </form>
+
+    </p>
+
+
+    <pre id="result"></pre>
+    <pre id="error"></pre>
+    <div id="table"></div>
+    <!-- <div id="table2"> -->
+        <table  id="table2"  >
+            
+            <h3>记账表</h3>
+            <hr>
+            <!-- <thead> -->
+                <tr>
+                    <th>ID</th>
+                    <th>备注</th>
+                    <th>金额</th>
+                    <th>出账户</th>
+                    <th>进账户</th>
+                    <th>时间</th>
+                </tr>
+            <!-- </thead> -->
+            <tbody id="tBody" ></tbody>
+        </table>
+
+    <!-- </div> -->
+</body>
+
+</html>
