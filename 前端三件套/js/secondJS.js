@@ -42,7 +42,7 @@ function testPost(sql) {
 
             //得到标签
             var json = JSON.parse(json1);
-            console.log(json.key)
+            // console.log(json.key)
             // var json = JSON.parse(json2)
             //拼接成html
 
@@ -75,7 +75,7 @@ function testPost(sql) {
                 htmlStr += "</td>"
                 htmlStr += "</tr>"
 
-                console.log(json[i].Note)
+                // console.log(json[i].Note)
 
             }
             document.getElementById("tBody").innerHTML = htmlStr
@@ -95,62 +95,89 @@ function testPost(sql) {
     };
 }
 
+//删除指定ID的记录
+function delete_record_id(){
+    var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+    console.log(url + 'DeleteRecordByID')
+    httpRequest.open('POST', url + 'DeleteRecordByID', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+    // httpRequest.setRequestHeader("Content-type", "application/json");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+    console.log(document.getElementById('html_record_id').value) 
 
-// 支出功能
-bready(function () {
-    document.getElementById('insertExpendRecord').onclick = function () {
-        // var tempp = "insert into Records (value, from_account, to_account, record_Time, note ) values("
-        // tempp = tempp + document.getElementById('price').value
-        // tempp = tempp + ", "
-        // tempp = tempp + "\""
-        // tempp = tempp + document.getElementById('secondAccount').value
-        // tempp = tempp + "\""
-        // tempp = tempp + ", "
-        // tempp = tempp + "\""
-        // tempp = tempp + document.getElementById('secondExpend').value
-        // tempp = tempp + "\""
-        // tempp = tempp + ", "
-        // tempp = tempp + "\""
-        // var temp3 = document.getElementById('date').value
-        // temp3 = temp3.replace("T", " ")
-        // tempp = tempp + temp3
-        // tempp = tempp + "\""
-        // tempp = tempp + ", "
-        // tempp = tempp + "\""
-        // tempp = tempp + document.getElementById('note').value
-        // tempp = tempp + "\""
-        // tempp = tempp + ")"
-        // // var temp = document.getElementById('sql2').value ;
-        // document.getElementById('sql1').value = tempp;
-
-
-        var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
-    httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
-    httpRequest.setRequestHeader("Content-type", "application/json");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
- 
-    httpRequest.send(JSON.stringify({ 
-        "Value":document.getElementById('price').value,
-        "From_Account" : document.getElementById('secondAccount').value,
-        "To_Account" : document.getElementById('secondExpend').value,
-        "Record_Time": document.getElementById('date').value,
-        "Note" : document.getElementById('note').value,
-     }));//发送请求 将json写入send中
-    /**
-     * 获取数据后的处理程序
-     */
-    console.log("shit")
-    httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
+    var formdata = new FormData()
+    formdata.append("Record_id",document.getElementById('html_record_id').value)
+    // httpRequest.send(JSON.stringify({ 
+       
+    //     "Record_id" : document.getElementById('html_record_id').value,
+    //  }));//发送请求 将json写入send
+    httpRequest.send(formdata)
+     httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
         if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功  
             var json1 = httpRequest.responseText;//获取到服务端返回的数据
 
             //得到标签
             var json = JSON.parse(json1);
-            console.log(json.key)
+            // console.log(json.key)
             // var json = JSON.parse(json2)
             //拼接成html
 
             var htmlStr = ""
 
+            for (i = 0; i < json.length; i++) {
+
+                htmlStr += "<tr>"
+                htmlStr += "<td>"
+                htmlStr += json[i].Record_id
+             
+                htmlStr += "&nbsp&nbsp&nbsp&nbsp</td>"
+                htmlStr += "<td>"
+                htmlStr += json[i].Note
+                htmlStr += "</td>"
+                htmlStr += "<td>"
+
+                // console.log(json[i].Note)
+
+            }
+            
+
+
+            
+        }
+    };
+}
+
+// 支出功能
+bready(function () {
+    document.getElementById('insertExpendRecord').onclick = function () {
+        var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+    httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+    // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+
+    var formdata = new FormData()
+    formdata.append("Value",document.getElementById('price').value)
+    formdata.append("From_Account" , document.getElementById('secondAccount').value)
+    formdata.append("To_Account" , document.getElementById('secondExpend').value)
+    formdata.append("Record_Time",document.getElementById('date').value.replace("T", " "))
+    formdata.append( "Note" , document.getElementById('note').value)
+    console.log(JSON.stringify({ 
+        "Value":document.getElementById('price').value,
+        "From_Account" : document.getElementById('secondAccount').value,
+        "To_Account" : document.getElementById('secondExpend').value,
+        "Record_Time": document.getElementById('date').value,
+        "Note" : document.getElementById('note').value,
+     })) 
+
+     httpRequest.send(formdata)
+
+     httpRequest.onreadystatechange = function () {
+        document.getElementById("selectAllRecord").onclick()//请求后的回调接口，可将请求成功后要执行的程序写在其中
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功  
+            var json1 = httpRequest.responseText;//获取到服务端返回的数据
+            //得到标签
+            var json = JSON.parse(json1);
+            console.log(json.key)
+            // var json = JSON.parse(json2)
+            //拼接成html
+            var htmlStr = ""
             for (i = 0; i < json.length; i++) {
 
                 htmlStr += "<tr>"
@@ -182,6 +209,22 @@ bready(function () {
     }
 }
     }
+    // httpRequest.send(
+        // JSON.stringify(
+    //     { 
+    //     "Value":document.getElementById('price').value,
+    //     "From_Account" : document.getElementById('secondAccount').value,
+    //     "To_Account" : document.getElementById('secondExpend').value,
+    //     "Record_Time": document.getElementById('date').value,
+    //     "Note" : document.getElementById('note').value,
+    //  }
+    //  )
+    //  );//发送请求 将json写入send中
+    /**
+     * 获取数据后的处理程序
+     */
+
+    
 })
 
 
@@ -189,29 +232,23 @@ bready(function () {
 
 bready(function () {
     document.getElementById('insertIncomeRecord').onclick = function () {
-        var tempp = "insert into Records (value, from_account, to_account, record_Time, note ) values("
-        tempp = tempp + document.getElementById('price').value
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        tempp = tempp + document.getElementById('secondIncome').value
-        tempp = tempp + "\""
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        tempp = tempp + document.getElementById('secondAccount').value
-        tempp = tempp + "\""
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        var temp3 = document.getElementById('date').value
-        temp3 = temp3.replace("T", " ")
-        tempp = tempp + temp3
-        tempp = tempp + "\""
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        tempp = tempp + document.getElementById('note').value
-        tempp = tempp + "\""
-        tempp = tempp + ")"
-        // var temp = document.getElementById('sql2').value ;
-        document.getElementById('sql1').value = tempp;
+
+
+            var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+        httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+        // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+    
+        var formdata = new FormData()
+        formdata.append("Value",document.getElementById('price').value)
+        formdata.append("From_Account" , document.getElementById('secondIncome').value)
+        formdata.append("To_Account" , document.getElementById('secondAccount').value)
+        formdata.append("Record_Time",document.getElementById('date').value.replace("T", " "))
+        formdata.append( "Note" , document.getElementById('note').value)    
+
+        httpRequest.send(formdata)
+
+        seeAll()
+
     }
 }
 )
@@ -219,29 +256,22 @@ bready(function () {
 // <!-- 转账功能 -->
 bready(function () {
     document.getElementById('insertTransRecord').onclick = function () {
-        var tempp = "insert into Records (value, from_account, to_account, record_Time, note ) values("
-        tempp = tempp + document.getElementById('price').value
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        tempp = tempp + document.getElementById('secondAccount').value
-        tempp = tempp + "\""
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        tempp = tempp + document.getElementById('secondAccount2').value
-        tempp = tempp + "\""
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        var temp3 = document.getElementById('date').value
-        temp3 = temp3.replace("T", " ")
-        tempp = tempp + temp3
-        tempp = tempp + "\""
-        tempp = tempp + ", "
-        tempp = tempp + "\""
-        tempp = tempp + document.getElementById('note').value
-        tempp = tempp + "\""
-        tempp = tempp + ")"
-        // var temp = document.getElementById('sql2').value ;
-        document.getElementById('sql1').value = tempp;
+
+
+        var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+        httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+        // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+    
+        var formdata = new FormData()
+        formdata.append("Value",document.getElementById('price').value)
+        formdata.append("From_Account" , document.getElementById('secondAccount').value)
+        formdata.append("To_Account" , document.getElementById('secondAccount2').value)
+        formdata.append("Record_Time",document.getElementById('date').value.replace("T", " "))
+        formdata.append( "Note" , document.getElementById('note').value)    
+
+        httpRequest.send(formdata)
+
+       seeAll() 
     }
 }
 )
@@ -373,7 +403,7 @@ function changeExpend() {
         second.options.add(new Option("各类会员服务", "各类会员服务"))
         second.options.add(new Option("人力服务", "人力服务"))
         second.options.add(new Option("知识付费", "知识付费"))
-    } else if (firlst.value == "行车交通") {
+    } else if (first.value == "行车交通") {
         second.options.add(new Option("公共交通", "公共交通"))
         second.options.add(new Option("打车租车", "打车租车"))
         second.options.add(new Option("长途车票", "长途车票"))
@@ -405,3 +435,56 @@ function changeExpend() {
     // document.form_first_type.secondAccount = second;
 }
 
+// 转账账户选择功能
+
+function changeCard2() {
+    // var first = document.getElementById("firstType")
+    var first = document.form2_first_type.firstType2;
+    var second = document.form2_first_type.secondAccount2;
+    console.log(first.selectedIndex)
+
+    // var second  = document.getElementById("secontAccount")
+    second.options.length = 0; //clear 
+    // while(second.options.le)
+    if (first.value == "信用卡") {
+        second.options.add(new Option("招行白羊♈", "招行白羊♈"))
+        second.options.add(new Option("建行visa白金", "建行visa白金"))
+        second.options.add(new Option("建设银行全球支付卡", "建设银行全球支付卡"))
+        second.options.add(new Option("广发有鱼白金", "广发有鱼白金"))
+        second.options.add(new Option("中行汽车卡", "中行汽车卡"))
+        second.options.add(new Option("故宫联名卡", "故宫联名卡"))
+        second.options.add(new Option("农行国家宝藏", "农行国家宝藏"))
+        second.options.add(new Option("吉维尼小船", "吉维尼小船"))
+    } else if (first.value == "网络信用") {
+        second.options.add(new Option("花呗", "花呗"))
+        second.options.add(new Option("京东白条", "京东白条"))
+    } else if (first.value == "储值网络支付") {
+        second.options.add(new Option("天猫超市", "天猫超市"))
+        second.options.add(new Option("支付宝", "支付宝"))
+        second.options.add(new Option("微信钱包", "微信钱包"))
+        second.options.add(new Option("京东小金库", "京东小金库"))
+        second.options.add(new Option("翼支付", "翼支付"))
+        second.options.add(new Option("建行速盈", "建行速盈"))
+        second.options.add(new Option("饭卡", "饭卡"))
+        second.options.add(new Option("余额宝", "余额宝"))
+        second.options.add(new Option("qq钱包", "qq钱包"))
+    } else if (first.value == "储蓄卡") {
+        second.options.add(new Option("小白青春卡", "小白青春卡"))
+        second.options.add(new Option("龙卡通", "龙卡通"))
+        second.options.add(new Option("工商银行", "工商银行"))
+        second.options.add(new Option("邮政储蓄", "邮政储蓄"))
+        second.options.add(new Option("中行6802", "中行6802"))
+        second.options.add(new Option("中行校园卡7462", "中行校园卡7462"))
+        second.options.add(new Option("海绵宝宝8376", "海绵宝宝8376"))
+        second.options.add(new Option("农行", "农行"))
+        second.options.add(new Option("大螺丝招行", "大螺丝招行"))
+        second.options.add(new Option("一鹿追梦", "一鹿追梦"))
+    } else if (first.value == "现金") {
+        second.options.add(new Option("现金", "现金"))
+    } else if (firlst.value == "系统默认") {
+        second.options.add(new Option("千金散去", "千金散去"))
+        second.options.add(new Option("欠别人的", "欠别人的"))
+        second.options.add(new Option("余额变更", "余额变更"))
+    }
+    document.form2_first_type.secondAccount = second;
+}

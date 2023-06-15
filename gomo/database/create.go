@@ -12,11 +12,14 @@ import (
 // var url = "/Users/neo/Downloads/db.db"
 
 func CreateRecord(data map[string]string, db *gorm.DB) string {
+
+	fmt.Printf("after nil check")
+	fmt.Print(data["Value"])
 	b, err := strconv.Atoi(data["Value"])
 	if err != nil {
 		fmt.Print(err)
+		fmt.Print(data)
 	}
-	fmt.Print(data["Value"])
 	record := Records{
 		// Record_id
 		Value:        b,
@@ -29,6 +32,7 @@ func CreateRecord(data map[string]string, db *gorm.DB) string {
 	fmt.Print(record)
 	// return data["Value"]
 	db.Create(&record)
+	fmt.Printf("before success")
 	return "success"
 	// fmt.Print(result)
 

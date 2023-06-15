@@ -38,7 +38,7 @@ func main() {
 		sql := ctx.PostForm("sql")
 		// ctx.Request.ParseForm()
 		// database.OriginWrite(sql, db)
-		database.OriginWrite("insert into Records (value, from_account, to_account, record_Time, note ) values(838, \"农行国家宝藏\", \"食材\", \"2023-06-06 13:11:11\", \"烧卖\")", db)
+		// database.OriginWrite("insert into Records (value, from_account, to_account, record_Time, note ) values(838, \"农行国家宝藏\", \"食材\", \"2023-06-06 13:11:11\", \"烧卖\")", db)
 		var result = database.ReadRecords("select * from Records order by record_time desc", db)
 		fmt.Print(sql)
 		fmt.Printf("haha")
@@ -56,6 +56,17 @@ func main() {
 		result := database.CreateRecord(json, db)
 		fmt.Print(result)
 		ctx.JSON(http.StatusOK, json)
+
+	})
+
+	r.POST(("/DeleteRecordByID"), func(ctx *gin.Context) {
+
+		var json = make(map[string]string)
+		json["Record_id"] = ctx.PostForm("Record_id")
+		var id = json["Record_id"]
+		result := database.DeleteRecordByID(id, db)
+		fmt.Print(result)
+		ctx.JSON(http.StatusOK, id)
 
 	})
 	// var result = database.ReadRecords("select * from Records", db)

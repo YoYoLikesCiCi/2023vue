@@ -21,7 +21,7 @@
 
     <p>
         <input type="text" id="html_record_id" style="width: 300px"
-            value="" /><input type="button" id="delete_record_id" value="删除指定ID记录" />
+            value="" /><input type="button" id="delete_record_id" value="删除指定ID记录" onclick="delete_record_id()"/>
     </p>
 
 
@@ -63,7 +63,7 @@
     </p>
     <p>
         请选择时间：&nbsp&nbsp&nbsp
-        <input type="datetime-local" id="date" value="2023-05-20 13:11:11">
+        <input type="datetime-local" id="date" value="2023-06-10 13:11:11">
     </p>
 
     <!-- 选择收入类型 -->
@@ -145,7 +145,7 @@
 
     <form name="form2_first_type" ,action="">
         选择第二个账户（转账用）: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-        <select id="firstType2" , onchange="changeCard()">
+        <select id="firstType2" , onchange="changeCard2()">
             <option value="信用卡" selected> 信用卡</option>
             <option value="储蓄卡">储蓄卡</option>
             <option value="储值网络支付">储值网络支付</option>

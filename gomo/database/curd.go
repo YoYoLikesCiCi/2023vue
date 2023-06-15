@@ -22,7 +22,7 @@ func OpenDB() (db *gorm.DB) {
 func ReadRecords(sql string, db *gorm.DB) (result []Records) {
 	var temp Records
 	db.First(&temp)
-	fmt.Println(temp)
+	// fmt.Println(temp)
 	db.Raw(sql).Scan(&result)
 	return result
 }
