@@ -1,7 +1,8 @@
 // <!-- 看所有记录 -->
 {/* <script> */ }
 
-var url = "http://127.0.0.1:18000/"
+var url2 = "http://127.0.0.1:18000/"
+var url = "http://172.20.178.112:18000/"
 function seeAll() {
     document.getElementById('sql1').value = "SELECT * FROM Records order by record_time desc"
     var temp = document.getElementById('exec')
@@ -28,7 +29,7 @@ bready(function () {
 
 function testPost(sql) {
     var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
-    httpRequest.open('POST', 'http://127.0.0.1:18000/fetchAll', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+    httpRequest.open('POST', url+"fetchAll", true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
     httpRequest.setRequestHeader("Content-type", "application/json");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
     // var obj = { ping: "ping" };
     httpRequest.send(JSON.stringify({ "sql": sql }));//发送请求 将json写入send中
@@ -149,7 +150,7 @@ function delete_record_id(){
 bready(function () {
     document.getElementById('insertExpendRecord').onclick = function () {
         var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
-    httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+    httpRequest.open('POST', url+"CreateRecord", true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
     // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
 
     var formdata = new FormData()
@@ -206,6 +207,8 @@ bready(function () {
             }
             document.getElementById("tBody").innerHTML = htmlStr
 
+            readAccountValue()
+
     }
 }
     }
@@ -235,7 +238,7 @@ bready(function () {
 
 
             var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
-        httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+        httpRequest.open('POST', url+"CreateRecord", true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
         // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
     
         var formdata = new FormData()
@@ -259,7 +262,7 @@ bready(function () {
 
 
         var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
-        httpRequest.open('POST', 'http://127.0.0.1:18000/CreateRecord', true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+        httpRequest.open('POST', url+"CreateRecord", true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
         // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
     
         var formdata = new FormData()
@@ -297,7 +300,7 @@ function changeCard() {
     // while(second.options.le)
     if (first.value == "信用卡") {
         second.options.add(new Option("招行白羊♈", "招行白羊♈"))
-        second.options.add(new Option("建行visa白金", "建行visa白金"))
+        second.options.add(new Option("建行VISA白金", "建行VISA白金"))
         second.options.add(new Option("建设银行全球支付卡", "建设银行全球支付卡"))
         second.options.add(new Option("广发有鱼白金", "广发有鱼白金"))
         second.options.add(new Option("中行汽车卡", "中行汽车卡"))
@@ -330,10 +333,12 @@ function changeCard() {
         second.options.add(new Option("一鹿追梦", "一鹿追梦"))
     } else if (first.value == "现金") {
         second.options.add(new Option("现金", "现金"))
-    } else if (firlst.value == "系统默认") {
+    } else if (first.value == "系统默认") {
         second.options.add(new Option("千金散去", "千金散去"))
         second.options.add(new Option("欠别人的", "欠别人的"))
         second.options.add(new Option("余额变更", "余额变更"))
+    } else if(first.value == "借入借出"){
+        second.options.add(new Option("代购", "代购"))
     }
     document.form_first_type.secondAccount = second;
 }
@@ -448,7 +453,7 @@ function changeCard2() {
     // while(second.options.le)
     if (first.value == "信用卡") {
         second.options.add(new Option("招行白羊♈", "招行白羊♈"))
-        second.options.add(new Option("建行visa白金", "建行visa白金"))
+        second.options.add(new Option("建行VISA白金", "建行VISA白金"))
         second.options.add(new Option("建设银行全球支付卡", "建设银行全球支付卡"))
         second.options.add(new Option("广发有鱼白金", "广发有鱼白金"))
         second.options.add(new Option("中行汽车卡", "中行汽车卡"))
@@ -481,10 +486,73 @@ function changeCard2() {
         second.options.add(new Option("一鹿追梦", "一鹿追梦"))
     } else if (first.value == "现金") {
         second.options.add(new Option("现金", "现金"))
-    } else if (firlst.value == "系统默认") {
+    } else if (first.value == "系统默认") {
         second.options.add(new Option("千金散去", "千金散去"))
         second.options.add(new Option("欠别人的", "欠别人的"))
         second.options.add(new Option("余额变更", "余额变更"))
+    }else if(first.value == "借入借出"){
+        second.options.add(new Option("代购", "代购"))
     }
     document.form2_first_type.secondAccount = second;
+}
+
+//查看所有账户余额功能
+
+function readAccountValue(){
+
+    var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+    httpRequest.open('POST', url+"ReadAccountValue", true); //第二步：打开连接/***发送json格式文件必须设置请求头 ；如下 - */
+    // httpRequest.setRequestHeader("Content-type","application/json; charset=UTF-8");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+
+    httpRequest.send()
+    httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功  
+            var json1 = httpRequest.responseText;//获取到服务端返回的数据
+            console.log(json1)
+            // console.log(json1[1])
+            //得到标签
+            var json = JSON.parse(json1);
+            // console.log(json.key)
+            // var json = JSON.parse(json2)
+            //拼接成html
+            var tab='<table border=1 width=1700">'
+            var tabsecondrow = ""
+            var rows =2
+            var cols = 1
+            console.log(json)
+            console.log(json[0])
+            console.log(typeof(json1))
+            // var str = eval("(" + json + ")" )
+            // console.log(str)
+            tab += '<tr>'
+            tabsecondrow += '<tr>'
+            for(var key in json){
+                tab+="<td style='background:green'>"+key+"</td>"
+                tabsecondrow += "<td style='background:yellow'>"+json[key]+"</td>"
+    console.log(key)
+    console.log(json[key])
+            }
+            tab += '</tr>'
+            tabsecondrow += '</tr>' + '</table>'
+
+            // for(var i =0 ; i < rows; i++){
+            //     tab += '<tr>'
+            //     for ( var j = 0; j < cols; j++){
+            //         tab+="<td style='background:green'>"+2+"</td>"
+            //     }
+            //     tab+='</tr>'
+            // }
+            // tab+='</table>';
+
+            // for (i = 0; i < json.length; i++) {
+
+
+
+            // }
+            document.getElementById("tableAccounts").innerHTML = tab + tabsecondrow
+
+
+    };
+
+}
 }

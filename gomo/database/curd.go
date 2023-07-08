@@ -2,16 +2,17 @@ package database
 
 import (
 	"fmt"
-
+    // "gomo/database"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 var url = "/Users/neo/Downloads/db.db"
+var urlonwin = "/mnt/d/db.db"
 
 func OpenDB() (db *gorm.DB) {
 	fmt.Printf("no error")
-	db, err := gorm.Open(sqlite.Open(url), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(urlonwin), &gorm.Config{})
 	fmt.Printf("success")
 	if err != nil {
 		panic("failed to connect database")
@@ -19,6 +20,8 @@ func OpenDB() (db *gorm.DB) {
 	fmt.Printf("to return")
 	return db
 }
+
+//读取所有记录
 func ReadRecords(sql string, db *gorm.DB) (result []Records) {
 	var temp Records
 	db.First(&temp)
@@ -26,6 +29,67 @@ func ReadRecords(sql string, db *gorm.DB) (result []Records) {
 	db.Raw(sql).Scan(&result)
 	return result
 }
+
+// 根据账户查询余额
+func ReadAccountValue(db *gorm.DB) (map[string]int){
+    var resultFrom , resultTo []AccountValue
+	mapFrom := make(map[string]int)
+	mapTo := make(map[string]int)
+	mapResult := make(map[string]int)
+    // mapResult2 := make(map[string]int)
+	var accounts []AccountName
+	// var accounts []Accounts
+	// var mapFrom, mapTo, mapResult map[string]int
+
+    db.Model(&Records{}).Select("from_account as Account_Name, sum(value) as Account_Value").Group("From_Account").Find(&resultFrom)
+
+	db.Model(&Records{}).Select("to_account as Account_Name, sum(value) as Account_Value").Group("To_Account").Find(&resultTo)
+    
+    db.Model(&Accounts{}).Select("account_Name as Account_Name").Where("type = ?", "3").Find(&accounts)
+	
+    fmt.Print(accounts)
+  
+	//转map
+	for _,v := range accounts{
+		mapResult[v.Account_Name] = 0
+	}
+
+	for _,v := range resultFrom{
+		mapFrom[v.Account_Name] = v.Account_Value
+	}
+
+// 写入到account，筛选过程
+	for _,v := range resultTo{
+		mapTo[v.Account_Name] = v.Account_Value
+		_, ok2 := mapResult[v.Account_Name]
+
+		if ok2 {
+			fmt.Println("wow")
+			value, ok := mapFrom[v.Account_Name]
+			if ok {
+				mapResult[v.Account_Name] = (v.Account_Value - value)/100
+				// delete(mapFrom,v.Account_Name)
+			}else{
+				mapResult[v.Account_Name] = v.Account_Value/100
+			}
+		}
+        
+	}
+	// for k,v := range mapFrom{
+	// 	mapResult[k] = - v/100
+	// }
+
+	// for k,v := range mapResult{
+	// 	value , ok := map
+	// }
+
+    // fmt.Print(accounts[0])
+	fmt.Printf("after 999 accounts")
+	fmt.Print(mapResult)
+
+	return mapResult
+}
+
 
 func OriginWrite(sql string, db *gorm.DB) {
 	db.Exec(sql)

@@ -69,6 +69,15 @@ func main() {
 		ctx.JSON(http.StatusOK, id)
 
 	})
+
+	//查询账户余额
+	r.POST(("/ReadAccountValue"), func(ctx *gin.Context) {
+
+		result := database.ReadAccountValue(db)
+		fmt.Print(result)
+		ctx.JSON(http.StatusOK,result)
+
+	})
 	// var result = database.ReadRecords("select * from Records", db)
 	// fmt.Print(db)
 

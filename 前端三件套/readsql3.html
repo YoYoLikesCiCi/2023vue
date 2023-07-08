@@ -18,7 +18,10 @@
     <p>
         <input type="button" id="selectAllRecord" value="看所有记录" onclick="seeAll()" />
     </p>
-
+    <p>
+        <input type="button" id="readAccountsValue" value="查看账户余额" onclick="readAccountValue()">
+        <div id="tableAccounts"></div>
+    </p>
     <p>
         <input type="text" id="html_record_id" style="width: 300px"
             value="" /><input type="button" id="delete_record_id" value="删除指定ID记录" onclick="delete_record_id()"/>
@@ -125,13 +128,14 @@
             <option value="现金">现金</option>
             <option value="系统默认">系统默认</option>
             <option value="网络信用">网络信用</option>
+            <option value="借入借出">借入借出</option>
         </select>
 
         &nbsp&nbsp&nbsp&nbsp
         <select id="secondAccount" , onchange="printlog()">
             <!-- <option>第二账户</option> -->
             <option value="招行白羊♈">"招行白羊♈"</option>
-            <option value="建行visa白金">建行visa白金</option>
+            <option value="建行VISA白金">建行VISA白金</option>
             <option value="建设银行全球支付卡" , selected> 建设银行全球支付卡 </option>
             <option value="广发有鱼白金">广发有鱼白金</option>
             <option value="中行汽车卡">中行汽车卡</option>
@@ -152,13 +156,15 @@
             <option value="现金">现金</option>
             <option value="系统默认">系统默认</option>
             <option value="网络信用">网络信用</option>
+<option value="借入借出">借入借出</option>
+                        
         </select>
 
         &nbsp&nbsp&nbsp&nbsp
         <select id="secondAccount2" , onchange="printlog()">
             <!-- <option>第二账户</option> -->
             <option value="招行白羊♈">"招行白羊♈"</option>
-            <option value="建行visa白金">建行visa白金</option>
+            <option value="建行VISA白金">建行VISA白金</option>
             <option value="建设银行全球支付卡" , selected> 建设银行全球支付卡 </option>
             <option value="广发有鱼白金">广发有鱼白金</option>
             <option value="中行汽车卡">中行汽车卡</option>
