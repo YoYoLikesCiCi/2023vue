@@ -1,8 +1,8 @@
 // <!-- 看所有记录 -->
 {/* <script> */ }
 
-var url2 = "http://127.0.0.1:18000/"
-var url = "http://172.20.178.112:18000/"
+var url = "http://127.0.0.1:18000/"
+var url2 = "http://172.20.178.112:18000/"
 function seeAll() {
     document.getElementById('sql1').value = "SELECT * FROM Records order by record_time desc"
     var temp = document.getElementById('exec')
