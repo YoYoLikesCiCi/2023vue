@@ -66,7 +66,11 @@
     </p>
     <p>
         请选择时间：&nbsp&nbsp&nbsp
-        <input type="datetime-local" id="date" value="2023-06-10 13:11:11">
+        <input type="datetime-local" id="date" >
+        <!-- <input type="datetime-local" id="date" value="2023-10-10 13:11:11"> -->
+    </p>
+    <p>
+        <input type="button" id="refreshTime" value="今日时间" onclick="refreshTime()" />
     </p>
 
     <!-- 选择收入类型 -->
@@ -201,4 +205,26 @@
     <!-- </div> -->
 </body>
 
+<!-- 设置时间为现在 -->
+<script type="text/javascript">
+    function refreshTime(){
+        var start = document.getElementById("date");
+    var date = new Date();
+    var month_t = (date.getMonth()+1).toString();
+    if (date.getMonth()+1 < 10){
+        month_t = '0'  + (date.getMonth() + 1); 
+    }
+
+    var day_t = date.getDate().toString();
+    if (date.getDate() < 10){
+        day_t = '0' + (date.getDate() )
+    }
+
+    var dateString = date.getFullYear()+"-"+(month_t)+"-" + day_t + " " + month_t+":"+day_t + ":" + day_t;
+    console.log(dateString)
+    document.getElementById("date").value = (dateString);
+    
+    }
+   
+</script>
 </html>
