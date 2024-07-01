@@ -7,8 +7,10 @@ import (
 	"gorm.io/gorm"
 )
 
-var url = "/Users/neo/Downloads/db.db"
+var urlonmac = "/Users/neo/Downloads/db.db"
 var urlonwin = "/mnt/d/db.db"
+var urloniCloud = "/Users/neo/Library/Mobile Documents/com~apple~CloudDocs/db.db"
+var url = "/Users/neo/Library/Mobile Documents/com~apple~CloudDocs/db.db"
 
 func OpenDB() (db *gorm.DB) {
 	fmt.Printf("no error")
