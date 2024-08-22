@@ -48,25 +48,40 @@ func ReadAccountValue(db *gorm.DB) map[string]int {
 	db.Model(&Records{}).Select("to_account as Account_Name, sum(value) as Account_Value").Group("To_Account").Find(&resultTo)
 
 	db.Model(&Accounts{}).Select("account_Name as Account_Name").Where("type = ?", "3").Find(&accounts)
-
+	fmt.Println("from result:")
+	fmt.Print(resultFrom)
+	fmt.Println("to result:")
+	fmt.Print(resultTo)
+	fmt.Println("accounts:")
 	fmt.Print(accounts)
 
 	//转map
 	for _, v := range accounts {
 		mapResult[v.Account_Name] = 0
+		fmt.Println("in account turn map:")
+		fmt.Print(v.Account_Name)
+		fmt.Println(mapResult[v.Account_Name])
 	}
 
 	for _, v := range resultFrom {
 		mapFrom[v.Account_Name] = v.Account_Value
 	}
 
+	fmt.Println("ok3")
+	_, ok3 := mapResult["工行AE牡丹祥运"]
+	fmt.Println(mapResult["工行AE牡丹祥运"])
+	fmt.Println(ok3)
 	// 写入到account，筛选过程
 	for _, v := range resultTo {
 		mapTo[v.Account_Name] = v.Account_Value
-		_, ok2 := mapResult[v.Account_Name]
 
+		fmt.Println("in cycle 有:")
+		fmt.Println(v.Account_Name)
+
+		_, ok2 := mapResult[v.Account_Name]
+		fmt.Println(ok2)
 		if ok2 {
-			fmt.Println("wow")
+			fmt.Println("mapResult中有" + v.Account_Name)
 			value, ok := mapFrom[v.Account_Name]
 			if ok {
 				mapResult[v.Account_Name] = (v.Account_Value - value) / 100
@@ -74,8 +89,9 @@ func ReadAccountValue(db *gorm.DB) map[string]int {
 			} else {
 				mapResult[v.Account_Name] = v.Account_Value / 100
 			}
-		}
+			fmt.Println(v.Account_Name+"  的余额是：%d", mapResult[v.Account_Name])
 
+		}
 	}
 	// for k,v := range mapFrom{
 	// 	mapResult[k] = - v/100
@@ -86,7 +102,7 @@ func ReadAccountValue(db *gorm.DB) map[string]int {
 	// }
 
 	// fmt.Print(accounts[0])
-	fmt.Printf("after 999 accounts")
+	fmt.Println("after 999 accounts")
 	fmt.Print(mapResult)
 
 	return mapResult

@@ -310,6 +310,8 @@ function changeCard() {
         second.options.add(new Option("故宫联名卡", "故宫联名卡"))
         second.options.add(new Option("农行国家宝藏", "农行国家宝藏"))
         second.options.add(new Option("吉维尼小船", "吉维尼小船"))
+        second.options.add(new Option("工行AE牡丹祥运", "工行AE牡丹祥运"))
+    
     } else if (first.value == "网络信用") {
         second.options.add(new Option("花呗", "花呗"))
         second.options.add(new Option("京东白条", "京东白条"))
@@ -463,6 +465,7 @@ function changeCard2() {
         second.options.add(new Option("故宫联名卡", "故宫联名卡"))
         second.options.add(new Option("农行国家宝藏", "农行国家宝藏"))
         second.options.add(new Option("吉维尼小船", "吉维尼小船"))
+        second.options.add(new Option("工行AE牡丹祥运", "工行AE牡丹祥运"))
     } else if (first.value == "网络信用") {
         second.options.add(new Option("花呗", "花呗"))
         second.options.add(new Option("京东白条", "京东白条"))
